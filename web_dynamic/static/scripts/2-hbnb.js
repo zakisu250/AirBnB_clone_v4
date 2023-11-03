@@ -1,6 +1,6 @@
 $(document).ready(init);
 
-const HOST = '0.0.0.0'
+const HOST = '0.0.0.0';
 function init () {
   const amenityDict = {}
   $('.amenities .popover input').change(function () {
@@ -16,7 +16,7 @@ function init () {
 }
 
 function apiStat () {
-  const API_URL = `http://$(HOST):5001/api/v1/status/`;
+  const API_URL = `http://${HOST}:5001/api/v1/status/`;
   $.get(API_URL, (data, textStatus) => {
     if (textStatus === 'success' && data.status === 'OK') {
       $('#api_status').addClass('available');
