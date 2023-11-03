@@ -13,6 +13,35 @@ function init () {
     $('.amenities h4').text(amenKeys.sort().join(', '));
   });
   apiStat();
+
+  const placeURL = `http://${HOST}:5001/api/v1/places_search/`;
+  $.ajax({
+    url: placeURL,
+    type: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: JSON.stringify({}),
+    success: function (res) {
+      for (const r of res) {
+        const article = `<article>
+          <div class="title_box">
+            <h2>${r.name}</h2>
+            <div class="price_by_night">$${r.price_by_night}</div>
+          </div>
+          <div class="information">
+            <div class="max_guest">${r.max_guest} Guest(s)</div>
+            <div class="number_rooms">${r.number_rooms} Bedroom(s)</div>
+            <div class="number_bathrooms">${r.number_bathrooms} Bathroom(s)</div>
+          </div>
+          <div class="description">${r.description}</div>
+        </article>`;
+      $('section.places').append(article);
+    }
+
+    },
+    error: function (err) {
+      console.log(err);
+    }
+  });
 }
 
 function apiStat () {
@@ -26,32 +55,3 @@ function apiStat () {
   });
 }
 
-function searchPlaces () {
-  const placeURL = `http://${HOST}:5001/api/v1/places_search`;
-  $.ajax({
-    url: placeURL,
-    type: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    data: JSON.stringify({}),
-    success: function (res) {
-      for (const r of res) {
-        const article = [
-	'<article>',
-	  '<div class="title_box">',
-	    '<h2>${r.name}</h2>',
-	    '<div class="price_by_night">$${r.price_by_night}</div>',
-	  '</div>',
-	  '<div class="information">',
-	    '<div class="max_guest">${max_guest} Guest(s)</div>',
-	    '<div class="number_rooms">${r.number_rooms} Bedroom(s)</div>',
-	    '<div class="number_bathrooms">${r.number_bathrooms} Bathroom(s)</div>',
-	  '</div>',
-	  '<div class="description">',
-	    '${r.description}',
-	  '</div>',
-	'</article'];
-	$('SECTION.places').append(article.join(''));
-      }
-    });
-  }
-}
