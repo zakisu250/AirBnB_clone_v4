@@ -12,7 +12,7 @@ $(document).ready(function () {
     const amenityText = amenityNames.join(', ');
     $('div.amenities H4').text(amenityText);
   });
-  $.get('http://127.0.0.1:5001/api/v1/status/', function (data, st) {
+  $.get('http://0.0.0.0:5001/api/v1/status/', function (data, st) {
     if (st === 'success' && data.status === 'OK') {
       $('div#api_status').addClass('available');
     } else {
