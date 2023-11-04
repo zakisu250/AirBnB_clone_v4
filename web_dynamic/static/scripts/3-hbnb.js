@@ -1,67 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="../static/styles/4-common.css?{{ cache_id }}">
-    <link rel="stylesheet" type="text/css" href="../static/styles/3-header.css?{{ cache_id }}">
-    <link rel="stylesheet" type="text/css" href="../static/styles/3-footer.css?{{ cache_id }}">
-    <link rel="stylesheet" type="text/css" href="../static/styles/6-filters.css?{{ cache_id }}">
-    <link type="text/css" rel="stylesheet" href="../static/styles/8-places.css?{{ cache_id }}">
-    <link rel="icon" href="../static/images/icon.png?{{ cache_id }}" />
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="static/scripts/3-hbnb.js"></script>
-    <title>HBnB</title>
-  </head>
-  <body>
-    <header>
-      <div class="logo"></div>
-      <div id="api_status"></div>
-    </header>
-    <div class="container">
-      <section class="filters">
-        <div class="locations">
-          <h3>States</h3>
-          <h4>&nbsp;</h4>
-          <div class="popover">
-            <ul>
-              {% for state in states %}
-              <li>
-                <h2>{{ state[0].name }}:</h2>
-                <ul>
-                  {% for city in state[1] %}
-                  <li>{{ city.name }}</li>
-                  {% endfor %}
-                </ul>
-              </li>
-              {% endfor %}
-            </ul>
+const HOST = '0.0.0.0';
+$(document).ready(function () {
+  const amenityDict = {};
+  $('.amenities .popover input').change(function () {
+    if ($(this).is(':checked')) {
+      amenityDict[$(this).attr('data-name')] = $(this).attr('data-id');
+    } else if ($(this).is(':not(:checked)')) {
+      delete amenityDict[$(this).attr('data-name')];
+    }
+    const amenKeys = Object.keys(amenityDict);
+    $('.amenities h4').text(amenKeys.sort().join(', '));
+  });
+  apiStat();
+  placeSearch();
+  });
+}
+
+function placeSearch () {
+  const placeURL = `http://${HOST}:5001/api/v1/places_search/`;
+  $.ajax({
+    url: placeURL,
+    type: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    data: JSON.stringify({}),
+    success: function (res) {
+      for (const r of res) {
+        const article = `<article>
+          <div class="title_box">
+            <h2>${r.name}</h2>
+            <div class="price_by_night">$${r.price_by_night}</div>
           </div>
-        </div>
-        <div class="amenities">
-          <h3>Amenities</h3>
-          <h4>&nbsp;</h4>
-          <div class="popover">
-            <ul>
-              {% for amenity in amenities %}
-              <li>
-                      <input type="checkbox" data-id="{{ amenity.id }}" data-name="{{ amenity.name }}"
-                        style="margin-right: 10px"
-                      >
-                      {{ amenity.name }}
-              </li>
-              {% endfor %}
-            </ul>
+          <div class="information">
+            <div class="max_guest">${r.max_guest} Guest(s)</div>
+            <div class="number_rooms">${r.number_rooms} Bedroom(s)</div>
+            <div class="number_bathrooms">${r.number_bathrooms} Bathroom(s)</div>
           </div>
-        </div>
-        <button type="button">Search</button>
-      </section>
-      <div class="placesh1"><h1>Places</h1></div>
-      <section class="places">
-        <!-- <h1>Places</h1> -->
-      </section>
-    </div>
-    <footer>
-      <p>Holberton School</p>
-    </footer>
-  </body>
-</html>
+          <div class="description">${r.description}</div>
+        </article>`;
+        $('section.places').append(article);
+        }
+      },
+      error: function (err) {
+        console.log(err);
+      }
+  });
+}
+
+function apiStat () {
+  const API_URL = `http://${HOST}:5001/api/v1/status/`;
+  $.get(API_URL, (data, textStatus) => {
+    if (textStatus === 'success' && data.status === 'OK') {
+      $('#api_status').addClass('available');
+    } else {
+      $('#api_status').removeClass('available');
+    }
+  });
+}
+
