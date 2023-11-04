@@ -1,8 +1,6 @@
-$(document).ready(init);
-
-const HOST = '127.0.0.1';
-function init () {
-  const amenityDict = {}
+const HOST = '0.0.0.0';
+$(document).ready(function () {
+  const amenityDict = {};
   $('.amenities .popover input').change(function () {
     if ($(this).is(':checked')) {
       amenityDict[$(this).attr('data-name')] = $(this).attr('data-id');
@@ -13,7 +11,11 @@ function init () {
     $('.amenities h4').text(amenKeys.sort().join(', '));
   });
   apiStat();
+  placeSearch();
+  });
+}
 
+function placeSearch () {
   const placeURL = `http://${HOST}:5001/api/v1/places_search/`;
   $.ajax({
     url: placeURL,
@@ -34,13 +36,12 @@ function init () {
           </div>
           <div class="description">${r.description}</div>
         </article>`;
-      $('section.places').append(article);
-    }
-
-    },
-    error: function (err) {
-      console.log(err);
-    }
+        $('section.places').append(article);
+        }
+      },
+      error: function (err) {
+        console.log(err);
+      }
   });
 }
 
