@@ -1,4 +1,4 @@
-const HOST = '0.0.0.0';
+const HOST = '127.0.0.1';
 $(document).ready(function () {
   const amenityDict = {};
   $('.amenities .popover input').change(function () {
@@ -12,8 +12,7 @@ $(document).ready(function () {
   });
   apiStat();
   placeSearch();
-  });
-}
+});
 
 function placeSearch () {
   const placeURL = `http://${HOST}:5001/api/v1/places_search/`;
@@ -37,11 +36,11 @@ function placeSearch () {
           <div class="description">${r.description}</div>
         </article>`;
         $('section.places').append(article);
-        }
-      },
-      error: function (err) {
-        console.log(err);
       }
+    },
+    error: function (err) {
+      console.log(err);
+    }
   });
 }
 
@@ -55,4 +54,3 @@ function apiStat () {
     }
   });
 }
-
