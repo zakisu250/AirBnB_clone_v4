@@ -1,3 +1,4 @@
+const HOST = '0.0.0.0';
 $(document).ready(function () {
   const amenities = {};
   $("input[type='checkbox']").on('change', function () {
