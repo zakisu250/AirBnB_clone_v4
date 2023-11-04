@@ -12,11 +12,16 @@ $(document).ready(function () {
     const amenityText = amenityNames.join(', ');
     $('div.amenities H4').text(amenityText);
   });
-  $.get('http://0.0.0.0:5001/api/v1/status/', function (data, st) {
-    if (st === 'success' && data.status === 'OK') {
-      $('div#api_status').addClass('available');
+  apiStat();
+});
+
+function apiStat () {
+  const API_URL = `http://${HOST}:5001/api/v1/status/`;
+  $.get(API_URL, (data, textStatus) => {
+    if (textStatus === 'success' && data.status === 'OK') {
+      $('#api_status').addClass('available');
     } else {
-      $('div#api_status').removeClass('available');
+      $('#api_status').removeClass('available');
     }
   });
-});
+}
