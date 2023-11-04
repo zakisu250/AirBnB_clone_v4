@@ -1,14 +1,15 @@
-$(document).ready(init);
-
-function init () {
-  const amenityDict = {}
-  $('.amenities .popover input').change(function () {
-    if ($(this).is(':checked')) {
-      amenityDict[$(this).attr('data-name')] = $(this).attr('data-id');
-    } else if ($(this).is(':not(:checked)')) {
-      delete amenityDict[$(this).attr('data-name')];
+$(document).ready(function () {
+  const amenities = {};
+  $("input[type='checkbox']").on('change', function () {
+    const amenityId = $(this).data('id');
+    const amenityName = $(this).data('name');
+    if ($(this).prop('checked')) {
+      amenities[amenityId] = amenityName;
+    } else {
+      delete amenities[amenityId];
     }
-    const amenKeys = Object.keys(amenityDict);
-    $('.amenities h4').text(amenKeys.sort().join(', '));
+    const amenityNames = Object.values(amenities);
+    const amenityText = amenityNames.join(', ');
+    $('div.amenities H4').text(amenityText);
   });
-}
+});
