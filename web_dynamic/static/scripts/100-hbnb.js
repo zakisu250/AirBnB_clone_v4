@@ -28,7 +28,6 @@ function checkObjs (objAll) {
     delete objs[$(this).data('name')];
   }
   const names = Object.keys(objs);
-  const ids = Object.values(objs);
   if (objAll === 1) {
     $('.amenities h4').text(names.sort().join(', '));
   } else if (objAll === 2) {
@@ -62,20 +61,20 @@ function searchPlaces () {
       success: function (res) {
         $('section.places').empty();
         for (const r of res) {
-	  const article =`<article>
-           <div class="title_box">
-             <h2>${r.name}</h2>
-             <div class="price_by_night">$${r.price_by_night}</div>
-           </div>
-           <div class="information">
-            <div class="max_guest">${r.max_guest} Guest(s)</div>
-            <div class="number_rooms">${r.number_rooms} Bedroom(s)</div>
-            <div class="number_bathrooms">${r.number_bathrooms} Bathroom(s)</div>
-           </div>
-           <div class="description">${r.description}</div>
-           </article>`;
-        $('section.places').append(article);
-        };
+          const article = `<article>
+            <div class="title_box">
+              <h2>${r.name}</h2>
+              <div class="price_by_night">$${r.price_by_night}</div>
+            </div>
+            <div class="information">
+              <div class="max_guest">${r.max_guest} Guest(s)</div>
+              <div class="number_rooms">${r.number_rooms} Bedroom(s)</div>
+              <div class="number_bathrooms">${r.number_bathrooms} Bathroom(s)</div>
+             </div>
+             <div class="description">${r.description}</div>
+          </article>`;
+          $('section.places').append(article);
+        }
       },
       error: function (err) {
         console.log(err);

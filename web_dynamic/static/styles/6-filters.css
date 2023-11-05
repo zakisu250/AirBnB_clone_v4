@@ -101,3 +101,7 @@ button:hover {
 .locations:hover .popover {
     visibility: visible;
 }
+
+.reviews h2{
+    margin: 0;
+}
