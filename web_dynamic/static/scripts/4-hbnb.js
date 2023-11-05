@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  const HOST = '127.0.0.1';
+  const HOST = '0.0.0.0';
   const amenityDict = {};
   $('.amenities .popover input').click(function () {
     if ($(this).prop('checked')) {
